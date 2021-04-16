@@ -3,7 +3,7 @@ import random
 from pygame.math import Vector2
 
 
-class FRUIT:
+class Fruit:
     def __init__(self, cell_number, cell_size, screen, apple):
         self.cell_number = cell_number
         self.cell_size = cell_size

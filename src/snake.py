@@ -2,7 +2,7 @@ import pygame
 from pygame.math import Vector2
 
 
-class SNAKE:
+class Snake:
     def __init__(self, cell_size, screen):
         self.cell_size = cell_size
         self.screen = screen
