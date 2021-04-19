@@ -7,7 +7,7 @@ Este proyecto se realiza para el curso Procesamiento Digital de Imágenes, semes
 > * Identificar movimientos de un objeto usando procesamiento digital de imágenes para controlar el juego *Culebrita*. 
 > Detección y el seguimiento del objeto en tiempo real.
 
-Para esto se usó el juego *Snake* encontrado en [pygame](https://www.pygame.org/project/5398/7821), cuyo repositorio se encuentra en este [enlace](https://github.com/clear-code-projects/Snake). Adaptándolo con **OpenCV** para poder interactuar con este usando la cámara.
+Para esto se usó el juego *Snake* encontrado en [pygame.org](https://www.pygame.org/project/5398/7821), cuyo repositorio se encuentra en este [enlace](https://github.com/clear-code-projects/Snake). Adaptándolo con **OpenCV** para poder interactuar con este usando la cámara.
 
 ## Herramientas tecnológicas
 
