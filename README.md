@@ -14,8 +14,8 @@ Para esto se usó el juego *Snake* encontrado en [pygame.org](https://www.pygame
 El desarrollo se realiza en Python utilizando las siguientes librerías:
 > * pygame
 > * pyautogui
->  * opencv-python
->  * numpy
+> * opencv-python
+> * numpy
 
 Estas se encuentran en el archivo ```requirements.txt```
 
@@ -27,6 +27,7 @@ Estas se encuentran en el archivo ```requirements.txt```
 3. Umbralización.
 4. Erosión binaria.
 5. Dilatación binaria.
+6. Fundido.
 
 En este video de YouTube se encuentra una explicación del proyecto así como de las técnicas empleadas para detectar la posición del objeto en cámara.
 
