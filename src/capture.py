@@ -25,115 +25,15 @@ from directKeys import  up, left, down, right
 from directKeys import PressKey, ReleaseKey
 from snake import Snake
 from fruit import Fruit
+from game import Game
 from pygame.math import Vector2
-
-# --------------------------------------------------------------------------
-# -- Inicio Codificación del juego--- --------------------------------------
-# --------------------------------------------------------------------------
-
-pygame.mixer.pre_init(44100, -16, 2, 512)
-pygame.init()
-cell_size = 40
-cell_number = 18
-screen = pygame.display.set_mode(
-    (cell_number * cell_size, cell_number * cell_size))
-clock = pygame.time.Clock()
-apple = pygame.image.load(
-    '../resources/graphics/apple.png').convert_alpha()
-game_font = pygame.font.Font(
-    '../resources/font/PoetsenOne-Regular.ttf', 25)
-
-SCREEN_UPDATE = pygame.USEREVENT
-snake_velocity = 180
-pygame.time.set_timer(SCREEN_UPDATE, snake_velocity)
-snake = Snake(cell_size, screen)
-fruit = Fruit(cell_number, cell_size, screen, apple)
-
-def update():
-    snake.move_snake()
-    check_collision()
-    check_fail()
-
-
-def draw_elements():
-    draw_grass()
-    fruit.draw_fruit()
-    snake.draw_snake()
-    draw_score()
-
-
-def check_collision():
-    if fruit.pos == snake.body[0]:
-        global snake_velocity
-        fruit.randomize()
-        snake.add_block()
-        snake.play_crunch_sound()
-        snake_velocity = snake_velocity - 3
-        pygame.time.set_timer(SCREEN_UPDATE, snake_velocity)
-
-    for block in snake.body[1:]:
-        if block == fruit.pos:
-            fruit.randomize()
-
-
-def check_fail():
-    if not -1 < snake.body[0].x < cell_number or not -1 < snake.body[0].y < cell_number:
-        game_over()
-
-    for block in snake.body[1:]:
-        if block == snake.body[0]:
-            game_over()
-
-
-def game_over():
-	global snake_velocity
-	snake.reset()
-	snake_velocity = 180
-	pygame.time.set_timer(SCREEN_UPDATE, snake_velocity)
-
-
-def draw_grass():
-    grass_color = (167, 209, 61)
-    for row in range(cell_number):
-        if row % 2 == 0:
-            for col in range(cell_number):
-                if col % 2 == 0:
-                    grass_rect = pygame.Rect(
-                        col * cell_size, row * cell_size, cell_size, cell_size)
-                    pygame.draw.rect(screen, grass_color, grass_rect)
-        else:
-            for col in range(cell_number):
-                if col % 2 != 0:
-                    grass_rect = pygame.Rect(
-                        col * cell_size, row * cell_size, cell_size, cell_size)
-                    pygame.draw.rect(screen, grass_color, grass_rect)
-
-
-def draw_score():
-    score_text = str(len(snake.body) - 3)
-    score_surface = game_font.render(score_text, True, (56, 74, 12))
-    score_x = int(cell_size * cell_number - 60)
-    score_y = int(cell_size * cell_number - 40)
-    score_rect = score_surface.get_rect(center=(score_x, score_y))
-    apple_rect = apple.get_rect(
-        midright=(score_rect.left, score_rect.centery))
-    bg_rect = pygame.Rect(apple_rect.left, apple_rect.top,
-                          apple_rect.width + score_rect.width + 6, apple_rect.height)
-
-    pygame.draw.rect(screen, (167, 209, 61), bg_rect)
-    screen.blit(score_surface, score_rect)
-    screen.blit(apple, apple_rect)
-    pygame.draw.rect(screen, (56, 74, 12), bg_rect, 2)
-
-# --------------------------------------------------------------------------
-# -- Fin Codificación del juego --------------------------------------------
-# --------------------------------------------------------------------------
-
-
 
 # --------------------------------------------------------------------------
 # -- Se inicializan variables ----------------------------------------------
 # --------------------------------------------------------------------------
+
+# Se inicia el juego
+game = Game()
 
 # Variable declarada para capturar el video en tiempo real de la cámara
 # Parametro '0' indica la webcam incorporada
@@ -155,7 +55,7 @@ current_key = set()
 # Se establece el radio del círculo para cubrir el objeto
 radius_of_circle = 1
 # Se establece el tamaño de la ventana del marco 
-window_size = 160
+window_size = 80
 # Se define la fuente de la letra con la que se escribirá en pantalla
 font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -172,7 +72,14 @@ while True:
     frame = cv2.flip(frame,1)
     # Se declaran variables con las dimensiones de la pantalla    
     height,width = frame.shape[:2]
+    height = height//2
+    width = width//2
     frame = cv2.resize(frame, dsize=(width, height))
+
+    # Mensaje en pantalla de bienvenida
+    cv2.putText(frame ,'Bienvenido!',(10,410),font,1,(255,255,255),1)
+    cv2.putText(frame ,'Usa un objeto amarillo',(10,440),font,0.6,(255,255,255),1)
+    cv2.putText(frame ,'para jugar',(10,460),font,0.6,(255,255,255),1)
 
     # Limites de las areas de juego Arriba, abajo, derecha e izquierda
     up_limit = (height/2 - window_size //2)
@@ -180,7 +87,7 @@ while True:
     left_limit = (width/2 - window_size //2)
     right_limit = (width/2 + window_size //2)
 
-    # Se aplica la función GaussianBlur para reducir el detalle de la imagen
+    # Se aplica la función GaussianBlur para reducir el detalle de la imagen, desenfocar
     bluryellow_frame = cv2.GaussianBlur(frame, (5, 5), 0)
 
     # Se transforma la imagen capturada al espacio de color de BGR a HSV
@@ -212,7 +119,7 @@ while True:
     cv2.rectangle(frame,(a,b),(a+c,b+d),(30, 255, 255),4)
     # Coordenadas del centro del objeto
     centre = (int(a+c/2),int(b+d/2))
-    # Se dibuja un circulo en el centro del objeto, con grosor 6 y color rojo. El -1 es para rellenar
+    # Se dibuja un circulo en el centro del objeto, con grosor 6 y color verde. El -1 es para rellenar
     cv2.circle(frame,centre,6,(0, 255, 0),-1)
 
     # --------------------------------------------------------------------------
@@ -293,31 +200,37 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == SCREEN_UPDATE:
-            update()
+        if event.type == game.SCREEN_UPDATE:
+            game.update()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                if snake.direction.y != 1:
-                    snake.direction = Vector2(0, -1)
+                if game.snake.direction.y != 1:
+                    game.snake.direction = Vector2(0, -1)
             if event.key == pygame.K_RIGHT:
-                if snake.direction.x != -1:
-                    snake.direction = Vector2(1, 0)
+                if game.snake.direction.x != -1:
+                    game.snake.direction = Vector2(1, 0)
             if event.key == pygame.K_DOWN:
-                if snake.direction.y != -1:
-                    snake.direction = Vector2(0, 1)
+                if game.snake.direction.y != -1:
+                    game.snake.direction = Vector2(0, 1)
             if event.key == pygame.K_LEFT:
-                if snake.direction.x != 1:
-                    snake.direction = Vector2(-1, 0)
+                if game.snake.direction.x != 1:
+                    game.snake.direction = Vector2(-1, 0)
 
-    screen.fill((175, 215, 70))
-    draw_elements()
-    clock.tick(200)
+    game.screen.fill((175, 215, 70))
+    #game.screen.
+    game.draw_elements()
+    game.clock.tick(200)
     pygame.display.update()
     # --------------------------------------------------------------------------
-    # -- FInal de renderización del juego --------------------------------------
+    # -- Final de renderización del juego --------------------------------------
     # --------------------------------------------------------------------------
 
 # Se detiene la captura de video
 vc.stop()
 # Se cierran todas las ventanas
 destroyAllWindows()
+
+
+# ------------------------------------------------------------
+# -------------  FIN DEL PROGRAMA ----------------------------
+# ------------------------------------------------------------
