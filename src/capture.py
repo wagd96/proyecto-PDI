@@ -52,6 +52,7 @@ window_size = 80
 # Se define la fuente de la letra con la que se escribirá en pantalla
 font = cv2.FONT_HERSHEY_SIMPLEX
 
+# Funcion para emular la accion de oprimir una tecla
 def press_key(key, key_text):
     global key_pressed, current_key
     # Se muestra en pantalla la tecla que se oprimirá
@@ -69,6 +70,7 @@ def press_key(key, key_text):
     current_key.add(key)
     key_pressed = True
 
+# Funcion para liberar teclas oprimidas
 def realese_key():
     global key_pressed, current_key
     # Se liberan las teclas que hayan sido presionadas, para seguir jugando
@@ -100,7 +102,6 @@ while True:
     ret, frame = vc.read()
     frame = cv2.flip(frame, 1)
     # Se declaran variables con las dimensiones de la pantalla
-    #height, width = 762, 777
     height, width = frame.shape[:2]
     height = height//2
     width = width//2
