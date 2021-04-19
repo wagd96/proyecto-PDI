@@ -39,11 +39,13 @@ Para ejecutar y jugar *Culebrita* es necesario tener un computador con una cáma
 2. Dirijirse al directorio del proyecto recién clonado.
 3. Ejecutar en consola: 
 	1.  `pip install -r requirements.txt`
-	2.  `python capture.py`
+4. Dirijirse al directorio `src`. Una vez allí ejecutar en consola:
+	1. `python capture.py`
+5. Seleccionar (dar click) en la ventana donde esta la *Culebrita*
 
 Listo! Ahora para jugar solo debe mover un objeto de color **amarillo** dentro de las regiones para así mover la *Culebrita* hacia arriba, abajo, derecha o izquierda.
 
-**Nota**: Para salir del juego puede oprimir la letra *q*.  
+**Nota**: Para salir del juego puede oprimir la letra *q*, o cerrar la ventana donde esta la *Culebrita*.  
 
 ## Autores de la adaptación
 
