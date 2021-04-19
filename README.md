@@ -29,7 +29,7 @@ Estas se encuentran en el archivo ```requirements.txt```
 5. Dilatación binaria.
 6. Fundido.
 
-En este video de YouTube se encuentra una explicación del proyecto así como de las técnicas empleadas para detectar la posición del objeto en cámara.
+En este [video de YouTube](https://www.youtube.com/watch?v=eNsFyYZIbAw) se encuentra una explicación del proyecto así como de las técnicas empleadas para detectar la posición del objeto en cámara.
 
 ## Pasos para ejecutar el proyecto
 
